@@ -26,3 +26,4 @@ class SeatUpdateView(APIView):
 
 def websocket_test_view(request):
     return render(request, 'seat/websocket_test.html')
+
