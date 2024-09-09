@@ -37,30 +37,3 @@ class SeatConsumer(AsyncWebsocketConsumer):
             'seat_number': event['seat_number'],
             'is_occupied': event['is_occupied']
         }))
-
-
-
-
-
-
-
-# added for testing!
-
-class TestConsumer(AsyncWebsocketConsumer):
-    async def connect(self):
-        await self.accept()
-        await self.send(text_data=json.dumps({
-            'message': 'WebSocket connected!'
-        }))
-
-    async def disconnect(self, close_code):
-        print('WebSocket disconnected:', close_code)
-
-    async def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        message = text_data_json['message']
-
-        # Echo the received message back to the client
-        await self.send(text_data=json.dumps({
-            'message': message
-        }))

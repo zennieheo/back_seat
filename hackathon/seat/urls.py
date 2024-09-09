@@ -1,9 +1,13 @@
-from django.urls import path
-from .views import BusListView, SeatUpdateView, websocket_test_view
+# seat/urls.py
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import SeatViewSet, BusViewSet, StopViewSet
+
+router = DefaultRouter()
+router.register(r'seats', SeatViewSet)
+router.register(r'buses', BusViewSet)
+router.register(r'stops', StopViewSet)
 
 urlpatterns = [
-    path('buses/', BusListView.as_view(), name='bus-list'),
-    path('buses/<str:bus_number>/seats/<int:seat_number>/', SeatUpdateView.as_view(), name='seat-update'),
-
-    path('websocket-test/', websocket_test_view, name='websocket_test'),
+    path('', include(router.urls)),
 ]

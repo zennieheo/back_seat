@@ -43,8 +43,9 @@ INSTALLED_APPS = [
 ]
 
 # Channels 설정
-ASGI_APPLICATION = 'config.asgi.application'
-# Channels Layers (Redis 사용 예시)
+ASGI_APPLICATION = 'hackathon.asgi.application'
+
+# Channels Layers 
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
@@ -54,10 +55,14 @@ CHANNEL_LAYERS = {
     },
 }
 
-# Django REST framework 설정
+# django 기본 인증 시스템을 사용하여 API 인증 설정
 REST_FRAMEWORK = {
-    'DEFAULT_RENDERER_CLASSES': [
-        'rest_framework.renderers.JSONRenderer',
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
     ],
 }
 
