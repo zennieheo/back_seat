@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'seat',
     'rest_framework',
     'channels',
+    'corsheaders',
 ]
 
 # Channels 설정
@@ -35,10 +36,10 @@ ASGI_APPLICATION = 'hackathon.asgi.application'
 
 # Channels Layers 
 CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],  # Redis 서버의 주소와 포트
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [("127.0.0.1", 6379)], 
         },
     },
 }
@@ -62,7 +63,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'corsheaders.middleware.CorsMiddleware',
+    # 'django.middleware.common.CommonMiddleware',
+
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True # 모든 출처에서의 요청 허용, 배포 환경에서는 수저앻야댐
 
 ROOT_URLCONF = 'hackathon.urls'
 

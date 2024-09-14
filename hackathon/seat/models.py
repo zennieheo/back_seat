@@ -1,32 +1,30 @@
 # seat/models.py
 from django.db import models
-from django.utils import timezone
 
-class Bus(models.Model):
-    bus_number = models.CharField(max_length=10, default="버스번호")
-    route_name = models.CharField(max_length=100, default="노선정보")
-    stops = models.ManyToManyField('Stop', related_name='buses')  # 정류장과의 다대다 관계
+# 정류장 > 노선 관계는 busstop과 busroute모델에서 ManyToMany 필드로 설정
+class BusStop(models.Model):
+    stop_id = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
 
-    def __str__(self):
-        return self.bus_number
-
-class Stop(models.Model):
-    stop_name = models.CharField(max_length=100, default="정류장이름")
-    location = models.CharField(max_length=255, default="위치")  # 예: "위도, 경도"
-
-    def __str__(self):
-        return self.stop_name
+class BusRoute(models.Model):
+    route_id = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100)
+    stops = models.ManyToManyField(BusStop, related_name='routes') # stops >routes 관계만 잇음
 
 class Seat(models.Model):
+    OCCUPIED = 'occupied'
+    AVAILABLE = 'available'
     SEAT_STATUS_CHOICES = [
-        ('available', 'Available'),
-        ('occupied', 'Occupied'),
+        (OCCUPIED, 'Occupied'),
+        (AVAILABLE, 'Available')
     ]
 
-    seat_number = models.CharField(max_length=10, default="좌석")
-    status = models.CharField(max_length=10, choices=SEAT_STATUS_CHOICES, default='available')
-    bus = models.ForeignKey(Bus, on_delete=models.CASCADE, related_name='seats')
-    updated_at = models.DateTimeField(auto_now=True)  # 상태 변경 시간
-
-    def __str__(self):
-        return f"{self.bus.bus_number} - {self.seat_number}"
+    bus_route = models.ForeignKey(BusRoute, on_delete=models.CASCADE)
+    seat_number = models.IntegerField()
+    status = models.CharField(
+        max_length=10,
+        choices=SEAT_STATUS_CHOICES,
+        default=AVAILABLE
+    )

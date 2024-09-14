@@ -1,18 +1,20 @@
 # seat/serializers.py
 from rest_framework import serializers
-from .models import Seat, Bus, Stop
+from .models import Seat, BusStop, BusRoute
+
+class BusStopSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BusStop
+        fields = ['id', 'name', 'latitude', 'longitude']
 
 class SeatSerializer(serializers.ModelSerializer):
     class Meta:
         model = Seat
-        fields = ['id', 'seat_number', 'status', 'bus']
+        fields = ['id', 'seat_number', 'status', 'bus_route']
 
-class BusSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Bus
-        fields = ['id', 'bus_number', 'route_name']
+class BusRouteSerializer(serializers.ModelSerializer):
+    stops = BusStopSerializer(many=True, read_only=True)
 
-class StopSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Stop
-        fields = ['id', 'stop_name', 'location']
+        model = BusRoute
+        fields = ['id', 'name', 'stops']
