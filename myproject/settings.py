@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from celery.schedules import crontab
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -120,6 +122,17 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '3306',
     }
+}
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'  # Redis 사용 예시
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+
+
+CELERY_BEAT_SCHEDULE = {
+    'update-stops-every-hour': {
+        'task': 'seat.tasks.update_stops',
+        'schedule': crontab(minute=0, hour='*/1'),  # 매 시간마다 실행
+    },
 }
 
 
