@@ -1,17 +1,24 @@
 # seat/models.py
 from django.db import models
 
-# 정류장 > 노선 관계는 busstop과 busroute모델에서 ManyToMany 필드로 설정
 class BusStop(models.Model):
     stop_id = models.CharField(max_length=100, unique=True)
     name = models.CharField(max_length=100)
     latitude = models.FloatField()
     longitude = models.FloatField()
 
-class BusRoute(models.Model):
-    route_id = models.CharField(max_length=100, unique=True)
+    def __str__ (self):
+        return self.name
+    
+
+class Bus(models.Model):
+    bus_id = models.CharField(max_length=100, unique=True)
     name = models.CharField(max_length=100)
-    stops = models.ManyToManyField(BusStop, related_name='routes') # stops >routes 관계만 잇음
+    stops = models.ManyToManyField(BusStop, related_name='buses')
+
+    def __str__(self):
+        return self.name
+    
 
 class Seat(models.Model):
     OCCUPIED = 'occupied'
@@ -21,10 +28,12 @@ class Seat(models.Model):
         (AVAILABLE, 'Available')
     ]
 
-    bus_route = models.ForeignKey(BusRoute, on_delete=models.CASCADE)
+    bus = models.ForeignKey(Bus, on_delete=models.CASCADE)
     seat_number = models.IntegerField()
     status = models.CharField(
         max_length=10,
         choices=SEAT_STATUS_CHOICES,
         default=AVAILABLE
     )
+    def __str__(self):
+        return f"Seat {self.seat_number} on Bus {self.bus.name}"
