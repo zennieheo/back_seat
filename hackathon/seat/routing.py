@@ -1,7 +1,7 @@
-# seat/routing.py
+# seat/routings.py
 from django.urls import re_path
 from . import consumers
 
 websocket_urlpatterns = [
-    re_path('ws/seats/', consumers.SeatConsumer.as_asgi()),
+    re_path(r'ws/seats$', consumers.SeatConsumer.as_asgi()),
 ]
