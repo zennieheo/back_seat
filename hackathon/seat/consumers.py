@@ -6,15 +6,15 @@ from .models import Seat
 from django.core.exceptions import ObjectDoesNotExist
 
 class SeatConsumer(AsyncWebsocketConsumer):
-    async def connect(self):
+    async def connect(self): # 클라이언트가 websocket에 연결될 때 호출된다.
         self.room_group_name = 'seat_updates'
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
         await self.accept()
 
-    async def disconnect(self, close_code):
+    async def disconnect(self, close_code): # 클라이언트가 연결을 끊을 때 호출됨. 
         await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
 
-    async def receive(self, text_data):
+    async def receive(self, text_data): # 클라이언트가 ㅈebsocket을 통해 메시지를 보낼 때 호출됨. 
         text_data_json = json.loads(text_data)
         seat_id = text_data_json['seat_id']
         status = text_data_json['status']
