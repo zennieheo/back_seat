@@ -1,5 +1,6 @@
 venv/
 __pycache__
+
 # git rm --cached venv/
 # git commit -m "remove venv directory from repository"
 

@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import BusStop, Bus, Seat
 
 @admin.register(BusStop)
-class BusStopAdmin(admin.ModelAdmin):
+class StopAdmin(admin.ModelAdmin):
     list_display = ('stop_id', 'name', 'latitude', 'longitude')
     search_fields = ('name', 'stop_id')
 
@@ -17,3 +17,5 @@ class SeatAdmin(admin.ModelAdmin):
     list_display = ('bus', 'seat_number', 'status')
     list_filter = ('bus', 'status')
     search_fields = ('seat_number', 'bus__name')  # bus name을 통해 검색 가능
+
+

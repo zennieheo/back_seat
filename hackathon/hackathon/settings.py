@@ -71,6 +71,20 @@ MIDDLEWARE = [
 
 ]
 
+
+# added ; redis캐시를 사용하여 db 접근 줄이고, 웹소켓 메시지 처리 속도 향상..
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
+
+
+
 CORS_ALLOW_ALL_ORIGINS = True # 모든 출처에서의 요청 허용, 배포 환경에서는 수저앻야댐
 
 ROOT_URLCONF = 'hackathon.urls'

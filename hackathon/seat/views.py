@@ -1,4 +1,5 @@
 # seat/views.py
+from rest_framework import viewsets,generics
 from rest_framework import viewsets
 from .models import Seat, Bus, BusStop
 from .serializers import SeatSerializer, BusSerializer, StopSerializer
@@ -25,3 +26,11 @@ class BusViewSet(viewsets.ModelViewSet):
 class StopViewSet(viewsets.ModelViewSet):
     queryset = BusStop.objects.all()
     serializer_class = StopSerializer
+
+
+
+
+# added!
+class SeatListCreateView(generics.ListCreateAPIView):
+    queryset = Seat.objects.all()
+    serializer_class = SeatSerializer
