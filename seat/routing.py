@@ -1,10 +1,7 @@
-from django.urls import re_path
-from .consumers import SeatConsumer, TestConsumer
-
-
+# seat/routing.py
+from django.urls import path
+from . import consumers
 
 websocket_urlpatterns = [
-    re_path(r'ws/bus/(?P<bus_number>\w+)/$', SeatConsumer.as_asgi()),
-
-    re_path(r'ws/websocket-test/$', TestConsumer.as_asgi()),
+    path('ws/seats/', consumers.SeatConsumer.as_asgi()),
 ]
