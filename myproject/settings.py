@@ -115,8 +115,8 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'bus_management',
-        'USER': 'bus_admin',
+        'NAME': 'bus',
+        'USER': 'bus-admin',
         'PASSWORD': '04321',
         'HOST': 'localhost',
         'PORT': '3306',
