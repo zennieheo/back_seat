@@ -120,6 +120,9 @@ DATABASES = {
         'PASSWORD': '04321',
         'HOST': 'localhost',
         'PORT': '3306',
+        'OPTIONS': {
+            'unix_socket': '/var/run/mysqld/mysqld.sock',  # MySQL 서버의 소켓 파일 위치
+        }
     }
 }
 
