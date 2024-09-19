@@ -29,8 +29,8 @@ class SeatConsumer(AsyncWebsocketConsumer):
             seat_id = text_data_json['seat_id']
             status = text_data_json['status']
             
-            # 좌석 상태 업데이트
-            await self.update_seat_status(seat_id, status)
+            # 좌석 상태를 Redis에 업데이트
+            await self.update_seat_status_redis(seat_id, status)  # 수정된 부분
 
             # 그룹에 메시지 브로드캐스트
             await self.channel_layer.group_send(
@@ -46,8 +46,12 @@ class SeatConsumer(AsyncWebsocketConsumer):
             await self.close()
 
     @sync_to_async
-    def update_seat_status(self, seat_id, status):
+    def update_seat_status_redis(self, seat_id, status):  # Redis 사용을 위한 좌석 상태 업데이트 (수정된 부분)
         try:
+            # Redis에 좌석 상태 저장
+            redis_client.set(f'seat:{seat_id}', status)  # Redis에 좌석 상태 저장 (수정된 부분)
+
+            # Django DB에도 좌석 상태 업데이트 (옵션)
             # Redis에 좌석 상태 저장
             redis_client.set(f'seat:{seat_id}', status)  # Redis에 좌석 상태 저장 (수정된 부분)
 
@@ -56,7 +60,6 @@ class SeatConsumer(AsyncWebsocketConsumer):
             seat.status = status
             seat.save()
         except ObjectDoesNotExist:
-            # 좌석이 존재하지 않으면 로그 남기기
             print(f"Seat with id {seat_id} does not exist.")
 
     @sync_to_async

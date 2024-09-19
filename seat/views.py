@@ -1,8 +1,8 @@
 # seat/views.py
-from rest_framework import viewsets,generics
+from rest_framework import viewsets, generics
 from .models import Seat, Bus, Stop
 from .serializers import SeatSerializer, BusSerializer, StopSerializer
-from rest_framework.decorators import api_view, action
+from rest_framework.decorators import api_view, action  # action 추가
 from rest_framework.response import Response
 
 # SeatViewSet은 필요에 따라 유지
