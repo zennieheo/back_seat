@@ -34,7 +34,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [("127.0.0.1", 6379)], 
+            "hosts": [("bb.fsm4zb.ng.0001.apn2.cache.amazonaws.com:6379", 6379)], 
             'PASSWORD': config('REDIS_PASSWORD', default=None),
         },
     },
