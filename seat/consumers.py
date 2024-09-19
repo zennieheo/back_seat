@@ -4,6 +4,15 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import sync_to_async
 from .models import Seat
 from django.core.exceptions import ObjectDoesNotExist
+import redis
+
+# Redis 클라이언트 설정 (ElastiCache의 Redis 엔드포인트를 사용)
+redis_client = redis.StrictRedis(
+    host='bb.fsm4zb.ng.0001.apn2.cache.amazonaws.com',
+    port=6379,
+    decode_responses=True
+)
+
 
 class SeatConsumer(AsyncWebsocketConsumer):
     async def connect(self): # 클라이언트가 websocket에 연결될 때 호출된다.
@@ -39,6 +48,10 @@ class SeatConsumer(AsyncWebsocketConsumer):
     @sync_to_async
     def update_seat_status(self, seat_id, status):
         try:
+            # Redis에 좌석 상태 저장
+            redis_client.set(f'seat:{seat_id}', status)  # Redis에 좌석 상태 저장 (수정된 부분)
+
+            # Django DB에도 좌석 상태 업데이트 (옵션)
             seat = Seat.objects.get(id=seat_id)
             seat.status = status
             seat.save()
@@ -46,6 +59,10 @@ class SeatConsumer(AsyncWebsocketConsumer):
             # 좌석이 존재하지 않으면 로그 남기기
             print(f"Seat with id {seat_id} does not exist.")
 
+    @sync_to_async
+    def get_seat_status_from_redis(self, seat_id):  # Redis에서 좌석 상태를 가져오는 함수 (새로운 함수)
+        return redis_client.get(f'seat:{seat_id}')
+    
     async def seat_status_update(self, event):
         await self.send(text_data=json.dumps({
             'seat_id': event['seat_id'],

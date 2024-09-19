@@ -5,16 +5,10 @@ from decouple import config, Csv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+ALLOWED_HOSTS = ['43.201.255.0']
 
-SECRET_KEY = 'e870pqwhvr7@^9s%wlccu(uc!0**4ry(ff)grmx(f)5y6q&%5y'
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
+SECRET_KEY = 'your-secret-key-here'
 
-# SECURITY WARNING: keep the secret key used in production secret!
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=False, cast=bool)
-
-ALLOWED_HOSTS = [config('ALLOWED_HOSTS', default='127.0.0.1')]
 
 
 # Application definition
@@ -41,7 +35,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [("127.0.0.1", 6379)], 
+            "hosts": [("bb.fsm4zb.ng.0001.apn2.cache.amazonaws.com:6379", 6379)], 
             'PASSWORD': config('REDIS_PASSWORD', default=None),
         },
     },
