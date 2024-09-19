@@ -6,21 +6,9 @@ from decouple import config, Csv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-import environ
-env = environ.Env()
-environ.Env.read_env()
+ALLOWED_HOSTS = ['43.201.255.0']
 
-SECRET_KEY = env('SECRET_KEY')
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=False, cast=bool)
-
-ALLOWED_HOSTS = []
-
+SECRET_KEY = 'your-secret-key-here'
 
 # Application definition
 
@@ -47,6 +35,7 @@ CHANNEL_LAYERS = {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
             "hosts": [("127.0.0.1", 6379)], 
+            'PASSWORD': config('REDIS_PASSWORD', default=None),
         },
     },
 }
@@ -119,13 +108,17 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'bus_management',
-        'USER': 'bus_admin',
-        'PASSWORD': '04321',
+        'NAME': 'bus',
+        'USER': 'bus-admin',
+        'PASSWORD': '1234',
         'HOST': 'localhost',
         'PORT': '3306',
+        'OPTIONS': {
+            'unix_socket': '/var/run/mysqld/mysqld.sock',  # MySQL 서버의 소켓 파일 위치
+        }
     }
 }
+
 
 
 # Password validation
