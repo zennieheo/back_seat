@@ -4,7 +4,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myproject.settings')
 import django
 django.setup()
 
-from user.models import Users
+# from user.models import Users
 
 from django.core.asgi import get_asgi_application
 django_asgi_app = get_asgi_application()
@@ -18,6 +18,10 @@ import seat.routing
 application = ProtocolTypeRouter(
     {
         "http": django_asgi_app,
-        "websocket": URLRouter(seat.routing.websocket_urlpatterns)
+        "websocket": AllowedHostsOriginValidator(
+            AuthMiddlewareStack(
+                URLRouter(seat.routing.websocket_urlpatterns)
+            )
+        ),
     }
 )
