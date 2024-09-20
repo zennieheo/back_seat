@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 ALLOWED_HOSTS = ['43.201.255.0']
 
-SECRET_KEY = 'your-secret-key-here'
+SECRET_KEY = config('SECRET_KEY') 
 
 # Application definition
 
