@@ -9,7 +9,6 @@ import redis
 # Redis 클라이언트 설정 (ElastiCache의 Redis 엔드포인트를 사용)
 redis_client = redis.StrictRedis(
     host='bb.fsm4zb.ng.0001.apn2.cache.amazonaws.com',
-    port=6379,
     decode_responses=True
 )
 
@@ -48,10 +47,6 @@ class SeatConsumer(AsyncWebsocketConsumer):
     @sync_to_async
     def update_seat_status_redis(self, seat_id, status):  # Redis 사용을 위한 좌석 상태 업데이트 (수정된 부분)
         try:
-            # Redis에 좌석 상태 저장
-            redis_client.set(f'seat:{seat_id}', status)  # Redis에 좌석 상태 저장 (수정된 부분)
-
-            # Django DB에도 좌석 상태 업데이트 (옵션)
             # Redis에 좌석 상태 저장
             redis_client.set(f'seat:{seat_id}', status)  # Redis에 좌석 상태 저장 (수정된 부분)
 

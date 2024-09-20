@@ -6,17 +6,13 @@ from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
 from django.urls import path
 from seat.consumers import SeatConsumer
+from seat.routing import websocket_urlpatterns
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myproject.settings')
-
-django_asgi_app = get_asgi_application()
-
+django.setup()
 application = ProtocolTypeRouter({
     "http": get_asgi_application(),
     "websocket": AuthMiddlewareStack(
-        URLRouter([
-            # seat_routing.websocket_urlpatterns
-            path('ws/seats/', SeatConsumer.as_asgi()),
-        ])
+        URLRouter(websocket_urlpatterns)
     ),
 })
